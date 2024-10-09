@@ -5,6 +5,7 @@
 #include <cassert>
 #include <cmath>
 #include <sstream>
+#include <algorithm>
 
 void debug(int rank, char *format ...)
 {
@@ -15,8 +16,17 @@ void debug(int rank, char *format ...)
     va_end(args);
 }
 
-#include <vector>
-#include <algorithm>
+std::string h_index_to_str(std::vector<int> h_index){
+     std::stringstream ss;
+     for (size_t i=0; i<h_index.size(); ++i) {
+         ss << h_index[i];
+         if (i != h_index.size() - 1) {
+             ss << ".";
+         }
+     }
+     ss << "\n";
+    return ss.str();
+}
 
 std::vector<int> factorization(int idx, int base, int level){
     std::vector<int> h_index(level, 0);
@@ -29,7 +39,7 @@ std::vector<int> factorization(int idx, int base, int level){
     return h_index;
 }
 
-std::vector<int> rank_to_h_index(int rank, int base, int max_level, int n_elem_l1) {
+std::vector<int> rank_to_h_index(int rank, int base, int max_level) {
     std::vector<int> h_index = {0};
     if (rank > 0)
     {
@@ -46,7 +56,6 @@ std::vector<int> rank_to_h_index(int rank, int base, int max_level, int n_elem_l
     }
     return h_index;
 }
-
 
 int h_index_to_rank(std::vector<int> h_index, int base, int max_level) {
     int rank = 0;
@@ -78,22 +87,16 @@ int main(int argc, char** argv) {
 
     bool condition = (n_proc == (std::pow(base,max_level - 1) - 1) / (base - 1) * n_elem_l1 + 1);
     assert(condition && "Number of processes is not the expected one from the levels and the base.");
-
-    std::vector<int> h_index = rank_to_h_index(rank, base, max_level, n_elem_l1);
-    std::stringstream ss;
-    for (size_t i=0; i<h_index.size(); ++i) {
-        ss << h_index[i];
-        if (i != h_index.size() - 1) {
-            ss << ".";
-        }
+    std::vector<int> h_index = rank_to_h_index(rank, base, max_level);
+    debug(rank, &("My h-index " + h_index_to_str(h_index))[0]);
+    if (h_index.size() > 1)
+    {
+        std::vector<int> h_index_parent(h_index.begin(), h_index.end() - 1);
+        debug(rank, &("Parent h-index " + h_index_to_str(h_index_parent))[0]);
+        int parent_rank = h_index_to_rank(h_index_parent, base, max_level);
+        debug(rank, "Parent rank %d \n", parent_rank);
     }
-    ss << "\n";
-    std::string str = ss.str();
-    char* cstr = &str[0];
-    debug(rank, cstr);
-    int check_rank = h_index_to_rank(h_index, base, max_level);
-    debug(rank, "Check rank %d \n", check_rank);
-
     MPI_Finalize();
+
     return 0;
 }
