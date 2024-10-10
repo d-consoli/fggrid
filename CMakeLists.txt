@@ -48,10 +48,10 @@ endif()
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
-add_library(FgTree src/FgTree.cpp)
+add_library(FgGrid src/FgTree.cpp src/FgCell.cpp)
 add_library(FgVisualizer src/FgVisualizer.cpp)
 
-target_link_libraries(FgTree PUBLIC OpenMP::OpenMP_CXX ${VTK_LIBRARIES})
+target_link_libraries(FgGrid PUBLIC OpenMP::OpenMP_CXX ${VTK_LIBRARIES})
 target_link_libraries(FgVisualizer PUBLIC OpenMP::OpenMP_CXX ${VTK_LIBRARIES})
 
 target_link_libraries(FgVisualizer PRIVATE ${VTK_LIBRARIES})

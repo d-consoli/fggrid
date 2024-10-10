@@ -1,4 +1,8 @@
 add_executable(FgTree_test FgTree_test.cpp)
-target_link_libraries(FgTree_test PUBLIC FgTree)
+target_link_libraries(FgTree_test PUBLIC FgGrid)
+
 add_executable(FgVisualizer_test MACOSX_BUNDLE FgVisualizer_test.cpp)
 target_link_libraries(FgVisualizer_test PUBLIC FgVisualizer)
+
+add_executable(VisualizeSphereTree_test MACOSX_BUNDLE VisualizeSphereTree_test.cpp)
+target_link_libraries(VisualizeSphereTree_test PUBLIC FgGrid FgVisualizer)

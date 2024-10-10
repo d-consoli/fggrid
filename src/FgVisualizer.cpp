@@ -5,8 +5,8 @@
 #include "../include/FgVisualizer.h"
 
 void generate_polygon(vtkPolyData *polydata,
-                      const std::vector<std::vector<double>>& pointsMatrix,
-                      const std::vector<std::vector<int>>& trianglesMatrix)
+                      const FgMatReal& pointsMatrix,
+                      const FgMatUint& trianglesMatrix)
 {
     vtkNew<vtkPoints> points;
     // Insert points into vtkPoints
@@ -29,7 +29,7 @@ void generate_polygon(vtkPolyData *polydata,
             vtkTriangle->GetPointIds()->SetId(j, trianglesMatrix[i][j]);
         }
         triangles->InsertNextCell(vtkTriangle);
-        cellScalars->InsertNextValue(static_cast<float>(i));  // Assign a scalar value to each cell
+        cellScalars->InsertNextValue(static_cast<fg_float>(i));  // Assign a scalar value to each cell
     }
     polydata->SetPolys(triangles);
     polydata->GetCellData()->SetScalars(cellScalars);  // Assign scalar data to the cells
@@ -44,12 +44,12 @@ void generate_icosahedron(vtkPolyData* polydata)
     polydata->ShallowCopy(icosahedron);
 }
 
-void visualize_polydata(vtkPolyData* polydata, float axis_lengh)
+void visualize_polydata(vtkPolyData* polydata, fg_float axis_lengh)
 {
     vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputData(polydata);
-    long n = polydata->GetNumberOfCells();
-    double scale_max = double (polydata->GetNumberOfCells()) - 1.;
+    fg_iter n = polydata->GetNumberOfCells();
+    fg_double scale_max = fg_double (polydata->GetNumberOfCells()) - 1.;
     mapper->SetScalarRange(0, scale_max);
     mapper->SetColorModeToMapScalars();
     mapper->ScalarVisibilityOn();

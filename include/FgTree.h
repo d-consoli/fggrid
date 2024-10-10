@@ -5,26 +5,14 @@
 #ifndef FGGRID_FGTREE_H
 #define FGGRID_FGTREE_H
 
+#include "misc.h"
+
+
 class FgTree {
 
 };
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include <cassert>
-#include <cmath>
-#include <sstream>
-#include <algorithm>
-#include <cstdarg>
-#include <optional>
 
-using fg_uint = long unsigned int;
-using fg_int = long unsigned int;
-using fg_float = float;
-using fg_double = double;
-using fg_real = float;
-using fg_byte = unsigned char;
 
 void fg_print(const std::string& str, std::optional<fg_uint> rank = std::nullopt);
 

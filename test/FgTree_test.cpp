@@ -1,5 +1,6 @@
 //#define FG_USE_MPI
 #include "../include/FgTree.h"
+
 #include <omp.h>
 
 #ifdef FG_USE_MPI
@@ -37,13 +38,11 @@ int main(int argc, char** argv) {
     {
         std::vector<fg_uint> h_index_parent(h_index.begin(), h_index.end() - 1);
         fg_uint parent_rank = h_index_to_rank(h_index_parent, base, max_level);
-//        fg_print("Parent h-index is " + h_index_to_str(h_index_parent), rank);
+        fg_print("Parent rank " + std::to_string(parent_rank), rank);
+        fg_print("Parent h-index is " + h_index_to_str(h_index_parent), rank);
     }
 #ifndef FG_USE_MPI
     }
-//#ifdef FG_VISUALIZE
-//
-//#endif
 #else
     MPI_Finalize();
 #endif

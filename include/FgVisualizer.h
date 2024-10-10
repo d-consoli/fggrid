@@ -5,6 +5,7 @@
 #ifndef FGGRID_FGVISUALIZER_H
 #define FGGRID_FGVISUALIZER_H
 
+#include "misc.h"
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkPolyDataMapper.h>
@@ -27,19 +28,21 @@
 #include <vtkAxesActor.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <vtkFloatArray.h>
-#include <vector>
+#include <vtkVertexGlyphFilter.h>
+#include <vtkTextActor3D.h>
+#include <vtkTextProperty.h>
 
 class FgVisualizer {
 
 };
 
 void generate_polygon(vtkPolyData *polydata,
-                      const std::vector<std::vector<double>>& pointsMatrix,
-                      const std::vector<std::vector<int>>& trianglesMatrix);
+                      const FgMatReal& pointsMatrix,
+                      const FgMatUint& trianglesMatrix);
 
 void generate_icosahedron(vtkPolyData* polydata);
 
-void visualize_polydata(vtkPolyData* polydata, float axis_lengh);
+void visualize_polydata(vtkPolyData* polydata, fg_float axis_lengh);
 
 
 
