@@ -128,6 +128,9 @@ int main(int argc, char** argv) {
         }
 #ifndef FG_USE_MPI
     }
+#ifdef FG_VISUALIZE
+
+#endif
 #else
     MPI_Finalize();
 #endif

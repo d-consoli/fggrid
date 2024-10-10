@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 include(ExternalProject)
 project(fggrid)
+add_subdirectory(test)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_COMPILER /usr/bin/mpic++)
 
@@ -46,14 +47,25 @@ if (NOT VTK_FOUND)
 endif()
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
 
+include_directories(${CMAKE_SOURCE_DIR}/include)
+add_library(FgTree src/FgTree.cpp)
+add_library(FgVisualizer src/FgVisualizer.cpp)
 
-add_executable(fggrid run_fggrid.cpp)
-target_link_libraries(fggrid PUBLIC MPI::MPI_CXX)
-target_link_libraries(fggrid PRIVATE OpenMP::OpenMP_CXX)
-add_executable(visualizer MACOSX_BUNDLE visualizer.cpp)
-target_link_libraries(visualizer PRIVATE ${VTK_LIBRARIES})
+target_link_libraries(FgTree PUBLIC MPI::MPI_CXX)
+target_link_libraries(FgTree PRIVATE OpenMP::OpenMP_CXX)
 
+target_link_libraries(FgVisualizer PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(
-        TARGETS visualizer
+        TARGETS FgVisualizer
+        MODULES ${VTK_LIBRARIES}
+)
+
+add_executable(FgTree_test test/FgTree_test.cpp)
+target_link_libraries(FgTree_test FgTree OpenMP::OpenMP_CXX)
+
+add_executable(FgVisualizer_test MACOSX_BUNDLE test/FgVisualizer_test.cpp)
+target_link_libraries(FgVisualizer_test FgVisualizer ${VTK_LIBRARIES})
+vtk_module_autoinit(
+        TARGETS FgVisualizer_test
         MODULES ${VTK_LIBRARIES}
 )
