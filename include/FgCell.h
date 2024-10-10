@@ -9,11 +9,11 @@
 
 class FgCell {
 protected :
-    FgMatUint m_vert_id_3d;
-    FgMatUint m_vert_id_proj;
-    FgMatReal m_vert_coord_3d;
-    FgMatReal m_vert_coord_proj;
-public:
+    FgMatUint vert_id_3d;
+    FgMatUint vert_id_proj;
+    FgMatReal vert_coord_3d;
+    FgMatReal vert_coord_proj;
+public :
 
     FgCell(FgMatUint vert_id_3d, FgMatReal vert_coord_3d);
     void convertProjTo3D(FgVecReal in_vert);

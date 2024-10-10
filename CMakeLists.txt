@@ -8,21 +8,6 @@ set(CMAKE_CXX_COMPILER /usr/bin/mpic++)
 find_package(OpenMP REQUIRED)
 
 find_package(MPI REQUIRED)
-if(NOT MPI_FOUND)
-    ExternalProject_Add(mpi_project
-            URL https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-5.0.5.tar.gz
-            PREFIX ${CMAKE_CURRENT_BINARY_DIR}/mpi
-            CONFIGURE_COMMAND <path_to_mpi>/configure --prefix=${CMAKE_CURRENT_BINARY_DIR}/mpi
-            BUILD_COMMAND make
-            INSTALL_COMMAND make install
-    )
-    set(MPI_LIBRARIES ${CMAKE_CURRENT_BINARY_DIR}/mpi/lib)
-    set(MPI_INCLUDE_PATH ${CMAKE_CURRENT_BINARY_DIR}/mpi/include)
-
-    add_dependencies(fggrid mpi_project)
-else()
-    message(STATUS "MPI found")
-endif()
 include_directories(${MPI_INCLUDE_PATH})
 
 find_package(VTK COMPONENTS
@@ -48,8 +33,8 @@ endif()
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
-add_library(FgGrid src/FgTree.cpp src/FgCell.cpp)
-add_library(FgVisualizer src/FgVisualizer.cpp)
+add_library(FgGrid src/FgTree.cpp src/FgCell.cpp src/misc.cpp)
+add_library(FgVisualizer src/FgVisualizer.cpp src/misc.cpp)
 
 target_link_libraries(FgGrid PUBLIC OpenMP::OpenMP_CXX ${VTK_LIBRARIES})
 target_link_libraries(FgVisualizer PUBLIC OpenMP::OpenMP_CXX ${VTK_LIBRARIES})

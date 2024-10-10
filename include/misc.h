@@ -5,9 +5,11 @@
 #ifndef FGGRID_MISC_H
 #define FGGRID_MISC_H
 
-//
-// Created by dconsoli on 10-10-24.
-//
+#define FG_USE_MPI
+#ifdef FG_USE_MPI
+#include <mpi.h>
+#endif
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -32,5 +34,6 @@ using FgMatReal = std::vector<std::vector<fg_real>>;
 using FgVecUint = std::vector<fg_uint>;
 using FgVecReal = std::vector<fg_real>;
 
+void fg_print(const std::string& str, std::optional<fg_uint> rank);
 
 #endif //FGGRID_MISC_H

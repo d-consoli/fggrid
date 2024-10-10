@@ -7,24 +7,26 @@
 
 #include "misc.h"
 
-
 class FgTree {
 
+protected :
+
+    fg_uint n_levels;
+    fg_uint base;
+    fg_uint n_elem_l1;
+    fg_uint n_nodes;
+
+    std::vector<fg_uint> factorization(fg_uint idx, fg_uint level);
+
+public :
+
+    FgTree(fg_uint n_levels, fg_uint base, fg_uint n_elem_l1);
+    fg_uint subtree_nodes_num(fg_uint level);
+    std::string h_index_to_str(std::vector<fg_uint> h_index);
+    std::vector<fg_uint> rank_to_h_index(fg_uint rank);
+    fg_uint h_index_to_rank(std::vector<fg_uint> h_index);
+    fg_uint get_n_nodes();
+
 };
-
-
-
-void fg_print(const std::string& str, std::optional<fg_uint> rank = std::nullopt);
-
-fg_uint tree_nodes_num(fg_uint base, fg_uint level);
-
-std::string h_index_to_str(std::vector<fg_uint> h_index);
-
-std::vector<fg_uint> factorization(fg_uint idx, fg_uint base, fg_uint level);
-
-std::vector<fg_uint> rank_to_h_index(fg_uint rank, fg_uint base, fg_uint max_level) ;
-
-fg_uint h_index_to_rank(std::vector<fg_uint> h_index, fg_uint base, fg_uint max_level);
-
 
 #endif //FGGRID_FGTREE_H
