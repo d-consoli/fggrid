@@ -2,7 +2,6 @@
 // Created by dconsoli on 10-10-24.
 //
 
-#include <vtkPolyData.h>
 #include "../include/FgVisualizer.h"
 
 int main(int argc, char** argv)

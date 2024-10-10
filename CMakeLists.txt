@@ -51,21 +51,11 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 add_library(FgTree src/FgTree.cpp)
 add_library(FgVisualizer src/FgVisualizer.cpp)
 
-target_link_libraries(FgTree PUBLIC MPI::MPI_CXX)
-target_link_libraries(FgTree PRIVATE OpenMP::OpenMP_CXX)
+target_link_libraries(FgTree PUBLIC OpenMP::OpenMP_CXX ${VTK_LIBRARIES})
+target_link_libraries(FgVisualizer PUBLIC OpenMP::OpenMP_CXX ${VTK_LIBRARIES})
 
 target_link_libraries(FgVisualizer PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(
         TARGETS FgVisualizer
-        MODULES ${VTK_LIBRARIES}
-)
-
-add_executable(FgTree_test test/FgTree_test.cpp)
-target_link_libraries(FgTree_test FgTree OpenMP::OpenMP_CXX)
-
-add_executable(FgVisualizer_test MACOSX_BUNDLE test/FgVisualizer_test.cpp)
-target_link_libraries(FgVisualizer_test FgVisualizer ${VTK_LIBRARIES})
-vtk_module_autoinit(
-        TARGETS FgVisualizer_test
         MODULES ${VTK_LIBRARIES}
 )
