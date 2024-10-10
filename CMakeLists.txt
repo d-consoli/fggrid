@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 include(ExternalProject)
 project(fggrid)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_COMPILER /usr/bin/mpic++)
+
+find_package(OpenMP REQUIRED)
 
 find_package(MPI REQUIRED)
 if(NOT MPI_FOUND)
@@ -46,6 +49,7 @@ set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response
 
 add_executable(fggrid run_fggrid.cpp)
 target_link_libraries(fggrid PUBLIC MPI::MPI_CXX)
+target_link_libraries(fggrid PRIVATE OpenMP::OpenMP_CXX)
 add_executable(visualizer MACOSX_BUNDLE visualizer.cpp)
 target_link_libraries(visualizer PRIVATE ${VTK_LIBRARIES})
 

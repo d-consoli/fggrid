@@ -66,21 +66,21 @@ void visualize_polydata(vtkPolyData* polydata, float axis_lengh)
 {
     vtkNew<vtkPolyDataMapper> mapper;
     mapper->SetInputData(polydata);
-    mapper->SetScalarRange(0, polydata->GetNumberOfCells() - 1);
+    long n = polydata->GetNumberOfCells();
+    double scale_max = double (polydata->GetNumberOfCells()) - 1.;
+    mapper->SetScalarRange(0, scale_max);
     mapper->SetColorModeToMapScalars();
     mapper->ScalarVisibilityOn();
 
     // Create a lookup table to map cell data to colors
     vtkNew<vtkLookupTable> lut;
-    int n = polydata->GetNumberOfCells();
-    std::cout << "Number of cells in the polydata: " << n << std::endl;
     lut->SetNumberOfTableValues(n);
-    lut->SetTableRange(0.0, n-1);
+    lut->SetTableRange(0.0, scale_max);
     for(int i = 0; i < n; i++)
         lut->SetTableValue(i, 0.1, 0.8, 0.1);
     lut->Build();
     mapper->SetLookupTable(lut);
-    mapper->SetScalarRange(0.0, n);
+    mapper->SetScalarRange(0.0, scale_max);
     vtkNew<vtkActor> actor;
     actor->SetMapper(mapper);
     vtkNew<vtkRenderer> renderer;
@@ -117,24 +117,24 @@ void visualize_polydata(vtkPolyData* polydata, float axis_lengh)
 int main(int argc, char** argv)
 {
     vtkNew<vtkPolyData> polydata;
-//    generate_icosahedron(polydata);
+    generate_icosahedron(polydata);
+//
+//    std::vector<std::vector<double>> pointsMatrix = {
+//            {1.0, 0.0, 0.0}, // Point 0
+//            {0.0, 1.0, 0.0}, // Point 1
+//            {0.0, 0.0, 1.0}, // Point 2
+//            {0.0, 0.0, 0.0} // Point 3
+//    };
+//
+//    // Define triangle indices for the tetrahedron
+//    std::vector<std::vector<int>> trianglesMatrix = {
+//            {0, 1, 3}, // Triangle 1
+//            {0, 2, 3}, // Triangle 2
+//            {1, 2, 3}, // Triangle 3
+//            {0, 1, 2}  // Triangle 4
+//    };
 
-    std::vector<std::vector<double>> pointsMatrix = {
-            {1.0, 0.0, 0.0}, // Point 0
-            {0.0, 1.0, 0.0}, // Point 1
-            {0.0, 0.0, 1.0}, // Point 2
-            {0.0, 0.0, 0.0} // Point 3
-    };
-
-    // Define triangle indices for the tetrahedron
-    std::vector<std::vector<int>> trianglesMatrix = {
-            {0, 1, 3}, // Triangle 1
-            {0, 2, 3}, // Triangle 2
-            {1, 2, 3}, // Triangle 3
-            {0, 1, 2}  // Triangle 4
-    };
-
-    generate_polygon(polydata, pointsMatrix, trianglesMatrix);
+//    generate_polygon(polydata, pointsMatrix, trianglesMatrix);
 
 
     visualize_polydata(polydata, 2.0);
