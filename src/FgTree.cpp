@@ -25,17 +25,6 @@ fg_uint FgTree::subtree_nodes_num(fg_uint n_sublevels)
     return fg_uint(std::pow(this->base, n_sublevels) - 1) / (this->base - 1);
 }
 
-std::string FgTree::h_index_to_str(std::vector<fg_uint> h_index)
-{
-    std::stringstream ss;
-    for (size_t i=0; i<h_index.size(); ++i) {
-        ss << h_index[i];
-        if (i != h_index.size() - 1)
-            ss << ".";
-    }
-    return ss.str();
-}
-
 std::vector<fg_uint> FgTree::factorization(fg_uint idx, fg_uint level)
 {
     std::vector<fg_uint> h_index(level, 0);

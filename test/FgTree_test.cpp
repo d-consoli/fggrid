@@ -20,14 +20,17 @@ int main(int argc, char** argv) {
     for (fg_uint rank = 0; rank < fgTree.get_n_nodes(); rank ++) {
 #endif
     std::vector<fg_uint> h_index = fgTree.rank_to_h_index(rank);
-    fg_print("My h-index is " + fgTree.h_index_to_str(h_index), rank);
-    fg_print("Check rank " + std::to_string(fgTree.h_index_to_rank(h_index)), rank);
+    fg_print("My h-index is " + vec_to_str(h_index), rank);
+    fg_uint rec_rank = fgTree.h_index_to_rank(h_index);
+    fg_print("Check rank " + std::to_string(rec_rank), rank);
+    bool check_rank = (rank == rec_rank);
+    assert(check_rank && "Rank form h-index not matching the correct one.");
     if (h_index.size() > 1)
     {
         std::vector<fg_uint> h_index_parent(h_index.begin(), h_index.end() - 1);
         fg_uint parent_rank = fgTree.h_index_to_rank(h_index_parent);
         fg_print("Parent rank " + std::to_string(parent_rank), rank);
-        fg_print("Parent h-index is " + fgTree.h_index_to_str(h_index_parent), rank);
+        fg_print("Parent h-index is " + vec_to_str(h_index_parent), rank);
     }
 
 #ifndef FG_USE_MPI

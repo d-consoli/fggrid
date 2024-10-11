@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
-include(ExternalProject)
 project(fggrid)
-add_subdirectory(test)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_COMPILER /usr/bin/mpic++)
+
+#set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_CXX_COMPILER /usr/bin/mpic++)
 
 find_package(OpenMP REQUIRED)
 
 find_package(MPI REQUIRED)
-include_directories(${MPI_INCLUDE_PATH})
+include_directories(${MPI_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/include)
+
 
 find_package(VTK COMPONENTS
         CommonColor
@@ -32,14 +32,23 @@ if (NOT VTK_FOUND)
 endif()
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
 
-include_directories(${CMAKE_SOURCE_DIR}/include)
-add_library(FgGrid src/FgTree.cpp src/FgCell.cpp src/misc.cpp)
+add_subdirectory(test)
+add_library(FgGrid src/FgTree.cpp src/FgCell.cpp src/FgGeometry.cpp src/misc.cpp)
 add_library(FgVisualizer src/FgVisualizer.cpp src/misc.cpp)
 
-target_link_libraries(FgGrid PUBLIC OpenMP::OpenMP_CXX ${VTK_LIBRARIES})
+target_link_libraries(FgGrid PUBLIC ${MPI_LIBRARIES} OpenMP::OpenMP_CXX)
 target_link_libraries(FgVisualizer PUBLIC OpenMP::OpenMP_CXX ${VTK_LIBRARIES})
 
-target_link_libraries(FgVisualizer PRIVATE ${VTK_LIBRARIES})
+if(MPI_COMPILE_FLAGS)
+    set_target_properties(FgGrid PROPERTIES
+            COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
+endif()
+
+if(MPI_LINK_FLAGS)
+    set_target_properties(FgGrid PROPERTIES
+            LINK_FLAGS "${MPI_LINK_FLAGS}")
+endif()
+
 vtk_module_autoinit(
         TARGETS FgVisualizer
         MODULES ${VTK_LIBRARIES}

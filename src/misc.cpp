@@ -12,3 +12,5 @@ void fg_print(const std::string& str, std::optional<fg_uint> rank)
     ss << str << std::endl;
     std::cout << ss.str();
 }
+
+
