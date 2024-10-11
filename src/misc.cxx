@@ -16,7 +16,7 @@ std::string vec_to_str(std::vector<T> vec, std::optional<fg_uint> percision){
     for (size_t i=0; i<vec.size(); ++i) {
         ss << vec[i];
         if (i != vec.size() - 1) {
-            ss << " - ";
+            ss << " | ";
         }
     }
     return ss.str();

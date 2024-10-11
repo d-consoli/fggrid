@@ -2,11 +2,12 @@
 // Created by dconsoli on 10-10-24.
 //
 
-#include "../include/FgVisualizer.h"
+#include "FgVisualizer.h"
 
-void generate_polygon(vtkPolyData *polydata,
-                      const FgMatReal& pointsMatrix,
-                      const FgMatUint& trianglesMatrix)
+FgVisualizer::FgVisualizer() {}
+
+void FgVisualizer::generate_polygon(const FgMatReal& pointsMatrix,
+                                    const FgMatUint& trianglesMatrix)
 {
     vtkNew<vtkPoints> points;
     // Insert points into vtkPoints
@@ -15,7 +16,7 @@ void generate_polygon(vtkPolyData *polydata,
             points->InsertNextPoint(point[0], point[1], point[2]);
         }
     }
-    polydata->SetPoints(points);
+    this->polydata->SetPoints(points);
 
     vtkNew<vtkCellArray> triangles;
     vtkNew<vtkFloatArray> cellScalars;  // Create a scalar array for cell data
@@ -31,25 +32,25 @@ void generate_polygon(vtkPolyData *polydata,
         triangles->InsertNextCell(vtkTriangle);
         cellScalars->InsertNextValue(static_cast<fg_float>(i));  // Assign a scalar value to each cell
     }
-    polydata->SetPolys(triangles);
-    polydata->GetCellData()->SetScalars(cellScalars);  // Assign scalar data to the cells
+    this->polydata->SetPolys(triangles);
+    this->polydata->GetCellData()->SetScalars(cellScalars);  // Assign scalar data to the cells
 }
 
-void generate_icosahedron(vtkPolyData* polydata)
+void FgVisualizer::generate_icosahedron()
 {
     vtkNew<vtkPlatonicSolidSource> icosahedronSource;
     icosahedronSource->SetSolidTypeToIcosahedron();
     icosahedronSource->Update();
     auto icosahedron = icosahedronSource->GetOutput();
-    polydata->ShallowCopy(icosahedron);
+    this->polydata->ShallowCopy(icosahedron);
 }
 
-void visualize_polydata(vtkPolyData* polydata, fg_float axis_lengh)
+void FgVisualizer::interact(std::optional<fg_real> axis_length)
 {
     vtkNew<vtkPolyDataMapper> mapper;
-    mapper->SetInputData(polydata);
-    fg_iter n = polydata->GetNumberOfCells();
-    fg_double scale_max = fg_double (polydata->GetNumberOfCells()) - 1.;
+    mapper->SetInputData(this->polydata);
+    fg_iter n = this->polydata->GetNumberOfCells();
+    fg_double scale_max = fg_double (n) - 1.;
     mapper->SetScalarRange(0, scale_max);
     mapper->SetColorModeToMapScalars();
     mapper->ScalarVisibilityOn();
@@ -80,10 +81,10 @@ void visualize_polydata(vtkPolyData* polydata, fg_float axis_lengh)
 
     // Add axes to show orientation
     vtkNew<vtkAxesActor> axes;
-    if (axis_lengh > 0.)
+    if (axis_length.has_value())
     {
         renderer->AddActor(axes);
-        axes->SetTotalLength(axis_lengh, axis_lengh, axis_lengh);  // Adjust the size of the axes as needed
+        axes->SetTotalLength(axis_length.value(), axis_length.value(), axis_length.value());  // Adjust the size of the axes as needed
     }
     vtkNew<vtkOrientationMarkerWidget> orientationWidget;
     orientationWidget->SetOrientationMarker(axes);

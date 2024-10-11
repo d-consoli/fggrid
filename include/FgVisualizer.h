@@ -33,17 +33,21 @@
 #include <vtkTextProperty.h>
 
 class FgVisualizer {
+protected:
+    vtkNew<vtkPolyData> polydata;
+
+public:
+
+    FgVisualizer();
+
+    void generate_polygon(const FgMatReal& pointsMatrix,
+                          const FgMatUint& trianglesMatrix);
+
+    void generate_icosahedron();
+
+    void interact(std::optional<fg_real> axis_length = std::nullopt);
 
 };
-
-void generate_polygon(vtkPolyData *polydata,
-                      const FgMatReal& pointsMatrix,
-                      const FgMatUint& trianglesMatrix);
-
-void generate_icosahedron(vtkPolyData* polydata);
-
-void visualize_polydata(vtkPolyData* polydata, fg_float axis_lengh);
-
 
 
 

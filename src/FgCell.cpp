@@ -4,13 +4,14 @@
 
 #include "FgCell.h"
 
-FgCell::FgCell(FgMatUint vert_id_3d, FgMatReal vert_coord_3d)
-        : vert_id_3d(vert_id_3d)
-        , vert_coord_3d(vert_coord_3d)
+#include <utility>
+
+FgCell::FgCell(std::vector<FgVertex> vertices)
+        : vertices(std::move(vertices))
 {
 }
 
-void FgCell::convert3DToProj(FgVecReal in_vert)
+fg_real FgCell::get_area()
 {
 
 }

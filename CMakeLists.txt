@@ -33,7 +33,7 @@ endif()
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
 
 add_subdirectory(test)
-add_library(FgGrid src/FgTree.cpp src/FgCell.cpp src/FgGeometry.cpp src/misc.cpp)
+add_library(FgGrid src/FgTree.cpp src/FgGeometry.cpp src/FgCell.cpp src/FgVertex.cpp src/misc.cpp)
 add_library(FgVisualizer src/FgVisualizer.cpp src/misc.cpp)
 
 target_link_libraries(FgGrid PUBLIC ${MPI_LIBRARIES} OpenMP::OpenMP_CXX)

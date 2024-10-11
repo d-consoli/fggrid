@@ -6,18 +6,18 @@
 #define FGGRID_FGCELL_H
 
 #include "misc.h"
+#include "FgVertex.h"
 
 class FgCell {
-protected :
-    FgMatUint vert_id_3d;
-    FgMatUint vert_id_proj;
-    FgMatReal vert_coord_3d;
-    FgMatReal vert_coord_proj;
-public :
+protected:
+    std::vector<FgVertex> vertices;
 
-    FgCell(FgMatUint vert_id_3d, FgMatReal vert_coord_3d);
-    void convertProjTo3D(FgVecReal in_vert);
-    void convert3DToProj(FgVecReal in_vert);
+public:
+
+    FgCell(std::vector<FgVertex> vertices);
+    fg_real get_area();
+//    void convertProjTo3D(FgVecReal in_vert);
+//    void convert3DToProj(FgVecReal in_vert);
 
 };
 

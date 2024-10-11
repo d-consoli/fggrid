@@ -37,13 +37,7 @@ using FgVecReal = std::vector<fg_real>;
 
 void fg_print(const std::string& str, std::optional<fg_uint> rank = std::nullopt);
 template <typename T> std::string vec_to_str(std::vector<T> vec, std::optional<fg_uint> percision = std::nullopt);
-inline fg_real points_distance(FgVecReal p1, FgVecReal p2)
-{
-    fg_real dist = 0;
-    for (fg_iter k = 0; k < p1.size(); k++)
-        dist += (p1[k] - p2[k]) * (p1[k] - p2[k]);
-    return std::sqrt(dist);
-}
+
 
 #include "../src/misc.cxx"
 
