@@ -14,8 +14,6 @@
 #include <mpi.h>
 #endif
 
-
-
 int main(int argc, char** argv) {
 #ifdef FG_USE_MPI
     MPI_Init(&argc, &argv);
