@@ -6,8 +6,9 @@
 
 #include <utility>
 
-FgCell::FgCell(std::vector<FgVertex> vertices)
+FgCell::FgCell(std::vector<FgVertex> vertices, FgMatUint neighbors)
         : vertices(std::move(vertices))
+        , neighbors(std::move(neighbors))
 {
 }
 

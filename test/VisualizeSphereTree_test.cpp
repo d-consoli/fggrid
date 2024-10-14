@@ -3,12 +3,11 @@
 //
 
 //#define FG_USE_MPI
-#define FG_VISUALIZE
+//#define FG_VISUALIZE
 #include "FgTree.h"
 #include "FgVisualizer.h"
 #include "FgGeometry.h"
 #include "FgCell.h"
-#include <omp.h>
 
 
 int main(int argc, char** argv) {
@@ -17,16 +16,14 @@ int main(int argc, char** argv) {
     fg_uint base = fg_uint(std::stoi(argv[1]));
     fg_uint n_elem_l1 = std::stoi(argv[3]);
     FgTree fgTree(n_levels, base, n_elem_l1);
-    FgMatReal mesh_vert;
-    FgMatUint mesh_cells;
+
+
+//    omp_set_num_threads(int(mesh_cells.size()));
+
     FgGeometry fgGeometry(radius, n_elem_l1);
-    fgGeometry.get_l1_mesh(mesh_vert, mesh_cells);
+    FgMatUint l1_neighbors = fgGeometry.get_l1_neighbors();
 
-    omp_set_num_threads(int(fgTree.get_n_nodes()));
-#pragma omp parallel for
-    for (fg_uint rank = 1; rank < fgTree.get_n_nodes(); rank ++) {
 
-    }
 
 #ifdef FG_VISUALIZE
 

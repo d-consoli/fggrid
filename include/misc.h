@@ -12,6 +12,8 @@
 
 #include <iostream>
 #include <vector>
+#include <numeric>
+#include <omp.h>
 #include <string>
 #include <cassert>
 #include <cmath>

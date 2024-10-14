@@ -13,11 +13,16 @@ protected :
 
     fg_real radius;
     fg_uint n_elem_l1;
+    FgMatReal mesh_vert;
+    FgMatUint mesh_cells;
 
 public :
 
     FgGeometry(fg_real radius, fg_uint n_elem_l1);
-    void get_l1_mesh(FgMatReal &mesh_vert, FgMatUint &mesh_cells);
+    void generate_l1_mesh();
+    FgMatReal get_l1_vert();
+    FgMatUint get_l1_cells();
+    FgMatUint get_l1_neighbors();
 
     inline fg_real points_distance(FgVecReal p1, FgVecReal p2)
     {

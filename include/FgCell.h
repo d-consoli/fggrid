@@ -11,10 +11,12 @@
 class FgCell {
 protected:
     std::vector<FgVertex> vertices;
+    FgMatUint neighbors;
+
 
 public:
 
-    FgCell(std::vector<FgVertex> vertices);
+    FgCell(std::vector<FgVertex> vertices, FgMatUint neighbors);
     fg_real get_area();
 //    void convertProjTo3D(FgVecReal in_vert);
 //    void convert3DToProj(FgVecReal in_vert);
